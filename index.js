@@ -1,4 +1,5 @@
-const { promptFor, isNum, isValid, getHowManyPlayers, configurePlayer } = require("./userInput");
+"use strict";
+const { getHowManyPlayers, configurePlayer } = require("./userInput");
 const Game = require("./game");
 
 const players = getHowManyPlayers() === 1 ? [configurePlayer(1), "AI"] : [configurePlayer(1), configurePlayer(2)];
