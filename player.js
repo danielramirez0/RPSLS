@@ -4,8 +4,8 @@ class Player {
     this.name = name;
   }
 
-  selectGesture(option) {
-    return getGesture(option);
+  selectGesture(options) {
+    return getGesture(options);
   }
 }
 
