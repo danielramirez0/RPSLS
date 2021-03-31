@@ -1,4 +1,10 @@
-const color = require("colors");
+const colors = require("colors");
+colors.setTheme({
+  title: "white",
+  text: "grey",
+  prompt: "yellow",
+  result: "red",
+});
 const { Player, AI } = require("./player");
 
 class Game {
@@ -6,22 +12,21 @@ class Game {
     this.playerOne = new Player(p1);
     this.playerTwo = p2 === "AI" ? new AI(p2) : new Player(p2);
 
+    this.banner = "\nWelcome to Rock, Paper, Scissors, Lizard, Spock\n\tRock, Paper, Scissors with a twist!";
     this.rules = [
-      "\nWelcome to Rock, Paper, Scissors, Lizard, Spock",
-      "Rock, Paper, Scissors with a twist!",
       "First to win three rounds wins the game",
-      "\nGesture Victory Conditions:",
-      "Rock > Scissors & Lizard",
-      "Paper > Spock & Rock",
-      "Scissors > Paper & Lizard",
-      "Lizard > Spock & Paper",
-      "Spock > Scissors & Rock\n",
+      "Rock beats Scissors & Lizard",
+      "Paper beats Spock & Rock",
+      "Scissors beats Paper & Lizard",
+      "Lizard beats Spock & Paper",
+      "Spock beats Scissors & Rock",
     ];
 
     this.gestures = ["Rock", "Paper", "Scissors", "Lizard", "Spock"];
   }
 
   runGame() {
+    console.log(`${this.banner}`.title.bold);
     this.displayRules();
 
     while (this.playerOne.score < 3 && this.playerTwo.score < 3) {
@@ -38,9 +43,11 @@ class Game {
     console.log(this.playerOne.score > this.playerTwo.score ? `${this.playerOne.name} wins!` : `${this.playerTwo.name} wins!`);
   }
   displayRules() {
+    console.log("\n");
     for (const rule of this.rules) {
-      console.log(rule);
+      console.log(`\t${rule}`.title.italic);
     }
+    console.log("\n");
   }
 
   displayGestures() {
