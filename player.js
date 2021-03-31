@@ -32,6 +32,7 @@ class AI extends Player {
     }
   }
   randomSelector = (arr) => arr[Math.trunc(Math.random() * arr.length)];
+  // Function is used to increase the difficulty level
   shuffle(array) {
     var currentIndex = array.length,
       temporaryValue,

@@ -24,10 +24,11 @@ class Game {
     this.displayRules();
 
     while (this.playerOne.score < 3 && this.playerTwo.score < 3) {
-      console.log(this.getGesture(this.playerOne));
-      console.log(this.getGesture(this.playerTwo));
-
-      this.playerOne.score++;
+      let playerGesture1 = this.getGesture(this.playerOne);
+      let playerGesture2 = this.getGesture(this.playerTwo);
+      let roundResult = this.getRoundVictor(playerGesture1, playerGesture2);
+      console.log(`This round result: ${roundResult}`);
+      this.updateScore(roundResult);
     }
   }
 
@@ -52,6 +53,32 @@ class Game {
         let playerGesture = player.selectGesture(reprompt);
         playerGesture = playerGesture[0].toUpperCase() + playerGesture.slice(1).toLowerCase();
         return this.gestures.includes(playerGesture) ? playerGesture : this.getGesture(player, true);
+    }
+  }
+  getRoundVictor(g1, g2) {
+    switch (g1) {
+      case "Rock":
+        return g2 === g1 ? "a tie" : g2 === "Scissors" || g2 === "Lizard" ? "p1 wins" : "p1 loses";
+      case "Paper":
+        return g2 === g1 ? "a tie" : g2 === "Spock" || g2 === "Rock" ? "p1 wins" : "p1 loses";
+      case "Scissors":
+        return g2 === g1 ? "a tie" : g2 === "Paper" || g2 === "Lizard" ? "p1 wins" : "p1 loses";
+      case "Lizard":
+        return g2 === g1 ? "a tie" : g2 === "Spock" || g2 === "Paper" ? "p1 wins" : "p1 loses";
+      case "Spock":
+        return g2 === g1 ? "a tie" : g2 === "Scissors" || g2 === "Rock" ? "p1 wins" : "p1 loses";
+    }
+  }
+  updateScore(result) {
+    switch (result) {
+      case "p1 wins":
+        this.playerOne.score++;
+        break;
+      case "p1 loses":
+        this.playerTwo.score++;
+        break;
+      default:
+        break;
     }
   }
 }
