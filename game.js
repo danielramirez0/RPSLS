@@ -1,3 +1,4 @@
+const color = require("colors");
 const { Player, AI } = require("./player");
 
 class Game {
@@ -27,11 +28,15 @@ class Game {
       let playerGesture1 = this.getGesture(this.playerOne);
       let playerGesture2 = this.getGesture(this.playerTwo);
       let roundResult = this.getRoundVictor(playerGesture1, playerGesture2);
-      console.log(`This round result: ${roundResult}`);
+      console.log(roundResult === "It's a tie!" ? `\n${roundResult}\n` : `\nThis round victor is ${roundResult}\n`);
       this.updateScore(roundResult);
     }
+    this.displayWinner();
   }
 
+  displayWinner() {
+    console.log(this.playerOne.score > this.playerTwo.score ? `${this.playerOne.name} wins!` : `${this.playerTwo.name} wins!`);
+  }
   displayRules() {
     for (const rule of this.rules) {
       console.log(rule);
@@ -58,23 +63,23 @@ class Game {
   getRoundVictor(g1, g2) {
     switch (g1) {
       case "Rock":
-        return g2 === g1 ? "a tie" : g2 === "Scissors" || g2 === "Lizard" ? "p1 wins" : "p1 loses";
+        return g2 === g1 ? "It's a tie!" : g2 === "Scissors" || g2 === "Lizard" ? "Player 1" : "Player 2";
       case "Paper":
-        return g2 === g1 ? "a tie" : g2 === "Spock" || g2 === "Rock" ? "p1 wins" : "p1 loses";
+        return g2 === g1 ? "It's a tie!" : g2 === "Spock" || g2 === "Rock" ? "Player 1" : "Player 2";
       case "Scissors":
-        return g2 === g1 ? "a tie" : g2 === "Paper" || g2 === "Lizard" ? "p1 wins" : "p1 loses";
+        return g2 === g1 ? "It's a tie!" : g2 === "Paper" || g2 === "Lizard" ? "Player 1" : "Player 2";
       case "Lizard":
-        return g2 === g1 ? "a tie" : g2 === "Spock" || g2 === "Paper" ? "p1 wins" : "p1 loses";
+        return g2 === g1 ? "It's a tie!" : g2 === "Spock" || g2 === "Paper" ? "Player 1" : "Player 2";
       case "Spock":
-        return g2 === g1 ? "a tie" : g2 === "Scissors" || g2 === "Rock" ? "p1 wins" : "p1 loses";
+        return g2 === g1 ? "It's a tie!" : g2 === "Scissors" || g2 === "Rock" ? "Player 1" : "Player 2";
     }
   }
   updateScore(result) {
     switch (result) {
-      case "p1 wins":
+      case "Player 1":
         this.playerOne.score++;
         break;
-      case "p1 loses":
+      case "Player 2":
         this.playerTwo.score++;
         break;
       default:

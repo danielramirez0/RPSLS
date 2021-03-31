@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/danrezz/RPSLS#readme",
   "dependencies": {
+    "colors": "^1.4.0",
     "prompt-sync": "^4.2.0"
   }
 }
