@@ -19,19 +19,35 @@ class AI extends Player {
     super(name, score);
     this.difficultyLvl = difficultyLvl;
   }
-  selectGesture(userChoice, difficultyLvl, gestureArr) {
+  selectGesture(difficultyLvl, gestureArr) {
     switch (difficultyLvl) {
       case 1:
         return this.randomSelector(gestureArr);
       case 2:
-        [removed, ...gestureArr] = gestureArr;
-        break;
+        [a, ...gestureArr] = this.shuffle(gestureArr);
+        return this.randomSelector(gestureArr);
       case 3:
-        break;
+        [a, b, c, ...gestureArr] = this.shuffle(gestureArr);
+        return this.randomSelector(gestureArr);
     }
   }
   randomSelector = (arr) => arr[Math.trunc(Math.random() * arr.length)];
-  shuffleArray = (arr) => poop;
+  shuffle(array) {
+    var currentIndex = array.length,
+      temporaryValue,
+      randomIndex;
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    return array;
+  }
 }
 
 module.exports = {

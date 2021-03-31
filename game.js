@@ -24,7 +24,9 @@ class Game {
     this.displayRules();
 
     while (this.playerOne.score < 3 && this.playerTwo.score < 3) {
-      this.getGesture(this.playerOne);
+      console.log(this.getGesture(this.playerOne));
+      console.log(this.getGesture(this.playerTwo));
+
       this.playerOne.score++;
     }
   }
@@ -43,9 +45,14 @@ class Game {
   }
   getGesture(player, reprompt = false) {
     this.displayGestures();
-    let playerGesture = player.selectGesture(reprompt);
-    playerGesture = playerGesture[0].toUpperCase() + playerGesture.slice(1).toLowerCase();
-    return this.gestures.includes(playerGesture) ? playerGesture : this.getGesture(player, true);
+    switch (player.name) {
+      case "AI":
+        return player.selectGesture(player.difficultyLvl, this.gestures);
+      default:
+        let playerGesture = player.selectGesture(reprompt);
+        playerGesture = playerGesture[0].toUpperCase() + playerGesture.slice(1).toLowerCase();
+        return this.gestures.includes(playerGesture) ? playerGesture : this.getGesture(player, true);
+    }
   }
 }
 
