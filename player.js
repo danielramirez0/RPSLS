@@ -18,6 +18,22 @@ class AI extends Player {
   constructor(name, score, difficultyLvl = 1) {
     super(name, score);
     this.difficultyLvl = difficultyLvl;
+    this.knowledge = {
+      Strengths: {
+        Rock: ["Scissors", "Lizard"],
+        Paper: ["Spock", "Rock"],
+        Scissors: ["Paper", "Lizard"],
+        Lizard: ["Spock", "Paper"],
+        Spock: ["Scissors", "Rock"],
+      },
+      Weeknesses: {
+        Rock: ["Paper", "Spock"],
+        Paper: ["Scissors", "Lizard"],
+        Scissors: ["Rock", "Spock"],
+        Lizard: ["Rock", "Scissors"],
+        Spock: ["Paper", "Lizard"],
+      },
+    };
   }
   selectGesture(difficultyLvl, gestureArr) {
     switch (difficultyLvl) {
@@ -27,7 +43,7 @@ class AI extends Player {
         [a, ...gestureArr] = this.shuffle(gestureArr);
         return this.randomSelector(gestureArr);
       case 3:
-        [a, b, c, ...gestureArr] = this.shuffle(gestureArr);
+        [a, b, ...gestureArr] = this.shuffle(gestureArr);
         return this.randomSelector(gestureArr);
     }
   }

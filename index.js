@@ -1,9 +1,13 @@
 "use strict";
-const { getHowManyPlayers, configurePlayer } = require("./userInput");
-const Game = require("./game");
-
+const { getHowManyPlayers, configurePlayer, getDifficultyLevel } = require("./userInput");
+const { Game, GameHardMode } = require("./game");
+let game;
 const players = getHowManyPlayers() === 1 ? [configurePlayer(1), "AI"] : [configurePlayer(1), configurePlayer(2)];
+const difficultyMod = players[1] === "AI" ? getDifficultyLevel() : false;
 console.clear();
-
-let game = new Game(players[0], players[1]);
+if (difficultyMod === false) {
+  game = new Game(players[0], players[1]);
+} else {
+  game = new GameHardMode(players[0], players[1], difficultyMod);
+}
 game.runGame();
