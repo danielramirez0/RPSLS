@@ -1,10 +1,10 @@
 const colors = require("colors");
 colors.setTheme({
-  title: "white",
-  text: "cyan",
-  prompt: "yellow",
-  p1Highlight: "red",
-  p2Highlight: "blue",
+  title: ["white", "bold"],
+  text: ["cyan", "italic"],
+  p1Highlight: ["red", "bold"],
+  p2Highlight: ["blue", "bold"],
+  draw: ["bgReg", "white"],
 });
 const { Player, AI } = require("./player");
 
@@ -12,7 +12,7 @@ class Game {
   constructor(p1, p2) {
     this.playerOne = new Player(p1);
     this.playerTwo = p2 === "AI" ? new AI(p2) : new Player(p2);
-    this.banner = "\nWelcome to Rock, Paper, Scissors, Lizard, Spock\n\tIt's " + `${this.playerOne.name}`.bold.p1Highlight + " vs " + `${this.playerTwo.name}`.p2Highlight;
+    this.banner = "\nWelcome to Rock, Paper, Scissors, Lizard, Spock\n\tIt's ".title + `${this.playerOne.name}`.p1Highlight + " vs " + `${this.playerTwo.name}`.p2Highlight;
     this.rules = [
       "First to win three rounds wins the game",
       "Rock beats Scissors & Lizard",
@@ -25,7 +25,7 @@ class Game {
   }
 
   runGame() {
-    console.log(`${this.banner}`.title.bold);
+    console.log(this.banner);
     this.displayRules();
 
     while (this.playerOne.score < 3 && this.playerTwo.score < 3) {
@@ -41,29 +41,29 @@ class Game {
   }
 
   displayRoundResults(choiceOne, choiceTwo, result) {
-    console.log(`${this.playerOne.name}`.bold.p1Highlight + ` chose: ${choiceOne}`);
-    console.log(`${this.playerTwo.name}`.bold.p2Highlight + ` chose: ${choiceTwo}`);
-    console.log(result === "It's a tie!" ? `\n${result}\n`.bgRed.white.bold : "\nThe round goes to ".grey.bold + `${result}\n`);
+    console.log(`${this.playerOne.name}`.p1Highlight + ` chose: ${choiceOne}`);
+    console.log(`${this.playerTwo.name}`.p2Highlight + ` chose: ${choiceTwo}`);
+    console.log(result === "It's a tie!" ? `\n${result}\n`.draw : "\nThe round goes to ".text + `${result}\n`);
   }
 
   displayWinner() {
     let winner = this.playerOne.score > this.playerTwo.score ? `${this.playerOne.name} wins!` : `${this.playerTwo.name} wins!`;
-    console.log(`${winner}`.rainbow.bold);
+    console.log(`${winner}`.rainbow);
   }
 
   displayRules() {
     console.log("\n");
     for (const rule of this.rules) {
-      console.log(`\t${rule}`.text.italic.bold);
+      console.log(`\t${rule}`.text);
     }
     console.log("\n");
   }
 
   displayGestures(playerName) {
-    console.log(`${playerName}, select an option:`.text.bold + "\n");
+    console.log(`${playerName}, select an option:`.text + "\n");
     for (let i = 0; i < this.gestures.length; i++) {
       const gesture = this.gestures[i];
-      console.log(`\t(${i + 1}) : ${gesture}`.text.italic);
+      console.log(`\t(${i + 1}) : ${gesture}`.text);
     }
     console.log("\n");
   }
@@ -83,20 +83,20 @@ class Game {
   getRoundVictor(g1, g2) {
     switch (g1) {
       case "Rock":
-        return g2 === g1 ? "It's a tie!" : g2 === "Scissors" || g2 === "Lizard" ? `${this.playerOne.name}`.bold.p1Highlight : `${this.playerTwo.name}`.bold.p2Highlight;
+        return g2 === g1 ? "It's a tie!" : g2 === "Scissors" || g2 === "Lizard" ? `${this.playerOne.name}`.p1Highlight : `${this.playerTwo.name}`.p2Highlight;
       case "Paper":
-        return g2 === g1 ? "It's a tie!" : g2 === "Spock" || g2 === "Rock" ? `${this.playerOne.name}`.bold.p1Highlight : `${this.playerTwo.name}`.bold.p2Highlight;
+        return g2 === g1 ? "It's a tie!" : g2 === "Spock" || g2 === "Rock" ? `${this.playerOne.name}`.p1Highlight : `${this.playerTwo.name}`.p2Highlight;
       case "Scissors":
-        return g2 === g1 ? "It's a tie!" : g2 === "Paper" || g2 === "Lizard" ? `${this.playerOne.name}`.bold.p1Highlight : `${this.playerTwo.name}`.bold.p2Highlight;
+        return g2 === g1 ? "It's a tie!" : g2 === "Paper" || g2 === "Lizard" ? `${this.playerOne.name}`.p1Highlight : `${this.playerTwo.name}`.p2Highlight;
       case "Lizard":
-        return g2 === g1 ? "It's a tie!" : g2 === "Spock" || g2 === "Paper" ? `${this.playerOne.name}`.bold.p1Highlight : `${this.playerTwo.name}`.bold.p2Highlight;
+        return g2 === g1 ? "It's a tie!" : g2 === "Spock" || g2 === "Paper" ? `${this.playerOne.name}`.p1Highlight : `${this.playerTwo.name}`.p2Highlight;
       case "Spock":
-        return g2 === g1 ? "It's a tie!" : g2 === "Scissors" || g2 === "Rock" ? `${this.playerOne.name}`.bold.p1Highlight : `${this.playerTwo.name}`.bold.p2Highlight;
+        return g2 === g1 ? "It's a tie!" : g2 === "Scissors" || g2 === "Rock" ? `${this.playerOne.name}`.p1Highlight : `${this.playerTwo.name}`.p2Highlight;
     }
   }
 
   updateScore(result) {
-    result === "It's a tie!" ? null : result === `${this.playerOne.name}`.bold.p1Highlight ? this.playerOne.score++ : this.playerTwo.score++;
+    result === "It's a tie!" ? null : result === `${this.playerOne.name}`.p1Highlight ? this.playerOne.score++ : this.playerTwo.score++;
   }
 
   mapNumberToGesture = (array, index) => array[index - 1];
