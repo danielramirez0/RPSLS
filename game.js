@@ -32,9 +32,11 @@ class Game {
 
     while (this.playerOne.score < 3 && this.playerTwo.score < 3) {
       let playerGesture1 = this.getGesture(this.playerOne);
+      console.clear();
       let playerGesture2 = this.getGesture(this.playerTwo);
+      console.clear();
       let roundResult = this.getRoundVictor(playerGesture1, playerGesture2);
-      console.log(roundResult === "It's a tie!" ? `\n${roundResult}\n`.bgRed.white.bold : "\nThis round victor is ".grey.bold + `${roundResult}\n`);
+      console.log(roundResult === "It's a tie!" ? `\n${roundResult}\n`.bgRed.white.bold : "\nThe round goes to ".grey.bold + `${roundResult}\n`);
       this.updateScore(roundResult);
     }
     this.displayWinner();
@@ -53,11 +55,11 @@ class Game {
   }
 
   displayGestures(playerName) {
-    console.log(`${playerName}, select an option:`.text.bold);
-    for (const gesture of this.gestures) {
-      console.log(`\t${gesture}`.text.italic);
+    console.log(`${playerName}, select an option:`.text.bold + "\n");
+    for (let i = 0; i < this.gestures.length; i++) {
+      const gesture = this.gestures[i];
+      console.log(`\t(${i + 1}) : ${gesture}`.text.italic + "\n");
     }
-    console.log("\n");
   }
   getGesture(player, reprompt = false) {
     this.displayGestures(player.name);
@@ -66,7 +68,7 @@ class Game {
         return player.selectGesture(player.difficultyLvl, this.gestures);
       default:
         let playerGesture = player.selectGesture(reprompt);
-        playerGesture = playerGesture[0].toUpperCase() + playerGesture.slice(1).toLowerCase();
+        playerGesture = this.mapNumberToGesture(this.gestures, playerGesture);
         return this.gestures.includes(playerGesture) ? playerGesture : this.getGesture(player, true);
     }
   }
@@ -85,17 +87,10 @@ class Game {
     }
   }
   updateScore(result) {
-    switch (result) {
-      case "Player 1".bold.resultP1:
-        this.playerOne.score++;
-        break;
-      case "Player 2".bold.resultP2:
-        this.playerTwo.score++;
-        break;
-      default:
-        break;
-    }
+    result === "It's a tie!" ? null : result === "Player 1".bold.resultP1 ? this.playerOne.score++ : this.playerTwo.score++;
   }
+
+  mapNumberToGesture = (array, index) => array[index - 1];
 }
 
 module.exports = Game;
