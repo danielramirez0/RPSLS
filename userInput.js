@@ -21,14 +21,15 @@ const promptHidden = function (q, valid) {
   return response;
 };
 
-const isNumOneOrTwo = (input) => (input >= 1 && input <= 2 ? true : false);
 const isValid = () => true;
-const isNumOneThroughFive = (input) => (input >= 1 && input <= 5 ? true : false);
+const isNumOneOrTwo = (input) => (input >= 1 && input <= 2 ? true : false);
+const isNumOneToThree = (input) => (input >= 1 && input <= 3 ? true : false);
+const isNumOneToFive = (input) => (input >= 1 && input <= 5 ? true : false);
 
 const getHowManyPlayers = () => parseInt(promptFor("(1) Single player game or (2)Two player game: ".promptStyle, isNumOneOrTwo));
 const configurePlayer = (p) => promptFor(`Enter the name of player ${p}: `.promptStyle, isValid);
-const typedGesture = () => parseInt(promptHidden("Select a gesture #: ".promptStyle, isNumOneThroughFive));
-const getDifficultyLevel = () => parseInt(promptFor("(1) Easy mode or (2) Hard mode: ".promptStyle, isNumOneOrTwo));
+const typedGesture = () => parseInt(promptHidden("Select a gesture #: ".promptStyle, isNumOneToFive));
+const getDifficultyLevel = () => parseInt(promptFor("(1) Easy mode, (2) Hard mode, or (3) Impossible mode: ".promptStyle, isNumOneToThree));
 
 module.exports = {
   typedGesture: typedGesture,

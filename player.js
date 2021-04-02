@@ -15,55 +15,63 @@ class Player {
 }
 
 class AI extends Player {
-  constructor(name, score, difficultyLvl = 1) {
+  constructor(name, difficultyLvl = 1, score) {
     super(name, score);
     this.difficultyLvl = difficultyLvl;
     this.knowledge = {
-      Strengths: {
+      currentRound: 1,
+      strengths: {
         Rock: ["Scissors", "Lizard"],
         Paper: ["Spock", "Rock"],
         Scissors: ["Paper", "Lizard"],
         Lizard: ["Spock", "Paper"],
         Spock: ["Scissors", "Rock"],
       },
-      Weeknesses: {
+      weaknesses: {
         Rock: ["Paper", "Spock"],
         Paper: ["Scissors", "Lizard"],
         Scissors: ["Rock", "Spock"],
         Lizard: ["Rock", "Scissors"],
         Spock: ["Paper", "Lizard"],
       },
+      previousRound: {
+        playerOneGesture: "",
+        playerTwoGesture: "",
+        victor: 0,
+      },
     };
   }
+
   selectGesture(difficultyLvl, gestureArr) {
-    switch (difficultyLvl) {
-      case 1:
-        return this.randomSelector(gestureArr);
-      case 2:
-        [a, ...gestureArr] = this.shuffle(gestureArr);
-        return this.randomSelector(gestureArr);
-      case 3:
-        [a, b, ...gestureArr] = this.shuffle(gestureArr);
-        return this.randomSelector(gestureArr);
+    if (difficultyLvl === 1 || this.knowledge.currentRound === 1) {
+      this.knowledge.currentRound++;
+      return this.randomSelector(gestureArr);
+    } else if (difficultyLvl === 2) {
+      return this.knowledge.previousRound.victor === 0
+        ? this.randomSelector(gestureArr)
+        : this.knowledge.previousRound.victor === 1
+        ? this.makePredictiveSelection(1)
+        : this.makePredictiveSelection(2);
+    } else {
+      return this.makePredictiveSelection(3);
     }
   }
+
   randomSelector = (arr) => arr[Math.trunc(Math.random() * arr.length)];
-  // Function is used to increase the difficulty level
-  shuffle(array) {
-    var currentIndex = array.length,
-      temporaryValue,
-      randomIndex;
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-      // And swap it with the current element.
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
+
+  makePredictiveSelection(basis) {
+    let newGesture;
+    if (basis === 1) {
+      let targetGesture = this.knowledge.previousRound.playerOneGesture;
+      newGesture = this.randomSelector(this.knowledge.weaknesses[targetGesture]);
+    } else if (basis === 2) {
+      let targetGesture = this.knowledge.previousRound.playerTwoGesture;
+      newGesture = this.randomSelector(this.knowledge.strengths[targetGesture]);
+    } else {
+      let targetGesture = this.knowledge.previousRound.playerOneGesture;
+      newGesture = this.randomSelector(this.knowledge.weaknesses[targetGesture]);
     }
-    return array;
+    return newGesture;
   }
 }
 
